@@ -1,34 +1,41 @@
 import requests
 
-
-def convert():
-    init_currency = input('')
-    target_currency = input('')
+def converter():
+    init_currency = input('Что переводим? ')
+    target_currency = input('Во что переводим? ')
 
     while True:
         try:
-            amount = float(input(''))
+            amount = float(input('Сколько переводим?: '))
         except:
-            print('')
+            print('Таки сколько?')
             continue
         if not amount > 0:
-            print('')
+            print('Слишком мало чтобы переводить -)')
             continue
         else:
             break
-    url = ('' + target_currency + '&from=' + init_currency + '&amount=' + str(amount))
+
+    url = (
+            "https://api.apilayer.com/exchangerates_data/convert?to=" + target_currency + '&from='
+            + init_currency + '&amount=' + str(amount))
 
     payload = {}
-    headers = {'API_KEY': ''}
-    response = requests.request('GET', url, headers= headers, data=payload)
-    status_code =response.status_code
+    headers = {
+        'apikey': 'JRSaCL6cG9mvxBxapPpW4EpLvVZP2mkh'
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    status_code = response.status_code
 
     if status_code != 200:
-        print('')
+        print('Збоит... Попробуй позже')
         quit()
 
     result = response.json()
-    print('' + str(result['result']))
+    print('Получилось ' + str(result['result']) + " " + str(target_currency))
 
-if __name__ == '__main__'
-    convert()
+
+if __name__ == '__main__':
+    converter()
+
